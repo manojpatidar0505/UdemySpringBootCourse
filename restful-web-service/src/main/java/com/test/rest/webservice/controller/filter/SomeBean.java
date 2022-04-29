@@ -1,9 +1,12 @@
 package com.test.rest.webservice.controller.filter;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //2 nd way
-@JsonIgnoreProperties(value = { "field1" })
+//@JsonIgnoreProperties(value = { "field1" })
+
+@JsonFilter("SomeBeanFilter")
 public class SomeBean {
 	private String field1;
 	private String field2;
