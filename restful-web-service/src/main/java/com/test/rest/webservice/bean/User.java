@@ -52,5 +52,8 @@ public class User {
 		this.name = name;
 		this.birthDate = birthDate;
 	}
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 
 }
