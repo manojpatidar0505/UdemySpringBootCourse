@@ -30,8 +30,7 @@ import com.test.rest.webservice.repository.UserRepository;
 @RestController
 @RequestMapping("jpa/")
 public class UserJPAController {
-	@Autowired
-	private UserDaoService daoService;
+
 	@Autowired
 	private UserRepository repository;
 
