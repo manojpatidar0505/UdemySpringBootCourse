@@ -2,10 +2,15 @@ package com.test.rest.webservice.bean;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-
+@Entity
 public class User {
+	@Id
+	@GeneratedValue
 	private Integer id;
 	@Size(min = 2, max = 5, message = "Name is invalid")
 	private String name;
