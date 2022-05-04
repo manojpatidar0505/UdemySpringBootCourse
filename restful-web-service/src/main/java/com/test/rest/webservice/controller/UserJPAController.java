@@ -4,6 +4,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.test.rest.webservice.bean.Post;
 import com.test.rest.webservice.bean.User;
 import com.test.rest.webservice.exception.UserNotFoundException;
+import com.test.rest.webservice.repository.PostRepository;
 import com.test.rest.webservice.repository.UserRepository;
 
 @RestController
@@ -33,6 +35,8 @@ public class UserJPAController {
 
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private PostRepository postRepository;
 
 	@GetMapping("users")
 	public List<User> retriveAllUser() {
@@ -72,5 +76,21 @@ public class UserJPAController {
 			throw new UserNotFoundException("id-" + id);
 		}
 		return userOptional.get().getPosts();
+	}
+
+	@PostMapping("users/{id}/posts")
+	public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody Post post) {
+
+		Optional<User> userOptional = repository.findById(id);
+		if (!userOptional.isPresent()) {
+			throw new UserNotFoundException("id-" + id);
+		}
+		User user = userOptional.get();
+
+		post.setUser(user);
+		Post postUser = postRepository.save(post);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(postUser.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
 	}
 }
